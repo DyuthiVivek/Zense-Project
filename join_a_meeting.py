@@ -62,6 +62,9 @@ time.sleep(2)
 driver.implicitly_wait(200)
 
 driver.find_element("xpath", "/html/body/div[1]/c-wiz/div/div/div[14]/div[3]/div/div[2]/div[4]/div/div/div[2]/div[1]/div[2]/div[1]/div[1]/button").click()
-time.sleep(10)
+time.sleep(5)
 
 
+TurnOnCaptions = driver.find_element("xpath","/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[11]/div/div/div[2]/div/div[3]/span/button")
+TurnOnCaptions.click()
+time.sleep(100)
