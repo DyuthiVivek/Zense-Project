@@ -20,6 +20,8 @@ chrome_options = Options()
 chrome_options.add_argument('use-fake-device-for-media-stream')
 chrome_options.add_argument('use-fake-ui-for-media-stream')
 chrome_options.add_argument('--disable-notifications')
+chrome_options.add_argument('--user-data-dir=/home/dyuthi/Zense-Project/profile')
+
 driver = uc.Chrome(chrome_options = chrome_options)
 
 # Opening the website 
@@ -43,12 +45,23 @@ driver.implicitly_wait(2000)
 
 
 EnterCode = driver.find_element("xpath","/html/body/c-wiz/div/div[2]/div/div[1]/div[3]/div/div[2]/div[1]/label/input")
-EnterCode.send_keys("ftt-djpm-siu") 
+EnterCode.send_keys("tuz-ahzg-jvv") 
 driver.implicitly_wait(2000)
 EnterCode.send_keys(Keys.ENTER)
 
 driver.implicitly_wait(2000)
-time.sleep(10)
+time.sleep(5)
 
+#to allow permissions
+#driver.find_element("xpath", "/html/body/div/div[3]/div[2]/div/div/div/div/div[2]/div/div[1]/button").click()
+driver.implicitly_wait(200)
+
+driver.find_element("xpath", "/html/body/div/div[3]/div[2]/div/div/div/div/div[2]/div/div[2]/button").click()
+
+time.sleep(2)
+driver.implicitly_wait(200)
+
+driver.find_element("xpath", "/html/body/div[1]/c-wiz/div/div/div[14]/div[3]/div/div[2]/div[4]/div/div/div[2]/div[1]/div[2]/div[1]/div[1]/button").click()
+time.sleep(10)
 
 
