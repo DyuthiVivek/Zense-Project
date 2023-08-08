@@ -96,12 +96,22 @@ TurnOnCaptions.click()
 #Got it pop up
 driver.find_element("xpath", "/html/body/div[1]/div[3]/span/div[2]/div/div/div[2]/div/button").click()
 
+send_a_message = True
 while True:
     try:
         captions = driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[7]/div[1]/div[1]")
         if "Dyuthi" in captions.text:
             print(captions.text)
         time.sleep(5)
+
+        while send_a_message:
+            driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[11]/div/div/div[3]/div/div[3]/div/div/span/button").click()
+            driver.implicitly_wait(200)
+            chat = driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[4]/div[2]/div/div[2]/div/div[2]/div[1]/div/label/textarea")           
+            chat.send_keys("sending a message") 
+            driver.implicitly_wait(200)
+            chat.send_keys(Keys.ENTER)
+            send_a_message = False
 
     except:
         continue
