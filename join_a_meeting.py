@@ -61,7 +61,7 @@ driver.implicitly_wait(2000)
 
 #meeting code enter
 EnterCode = driver.find_element("xpath","/html/body/c-wiz/div/div[2]/div/div[1]/div[3]/div/div[2]/div[1]/label/input")
-EnterCode.send_keys("rwk-afvc-imv") 
+EnterCode.send_keys("ivb-huts-xqv") 
 driver.implicitly_wait(2000)
 EnterCode.send_keys(Keys.ENTER)
 
@@ -97,6 +97,13 @@ TurnOnCaptions.click()
 driver.find_element("xpath", "/html/body/div[1]/div[3]/span/div[2]/div/div/div[2]/div/button").click()
 
 while True:
-    time.sleep(1)
+    try:
+        captions = driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[7]/div[1]/div[1]")
+        if "Dyuthi" in captions.text:
+            print(captions.text)
+        time.sleep(5)
 
+    except:
+        continue
+    #time.sleep(1)
 
