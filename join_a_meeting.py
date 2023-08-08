@@ -13,6 +13,10 @@ from selenium.common.exceptions import StaleElementReferenceException
 
 import undetected_chromedriver as uc
 
+from quickstart import next_event_details
+dic = next_event_details()
+meet_code = dic['link'][24:]
+print(meet_code)
 
 url = 'https://accounts.google.com/signin/v2/identifier?ltmpl=meet&continue=https%3A%2F%2Fmeet.google.com%3Fhs%3D193&&flowName=GlifWebSignIn&flowEntry=ServiceLogin'
 
@@ -61,7 +65,7 @@ driver.implicitly_wait(2000)
 
 #meeting code enter
 EnterCode = driver.find_element("xpath","/html/body/c-wiz/div/div[2]/div/div[1]/div[3]/div/div[2]/div[1]/label/input")
-EnterCode.send_keys("ivb-huts-xqv") 
+EnterCode.send_keys(meet_code) 
 driver.implicitly_wait(2000)
 EnterCode.send_keys(Keys.ENTER)
 
