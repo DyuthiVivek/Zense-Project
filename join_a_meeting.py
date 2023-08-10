@@ -121,12 +121,24 @@ def get_cc():
     if "Dyuthi" in captions.text:
         print(captions.text)
 
+chat_dic = {}
+
 def scrape():
     html = driver.page_source
     page_soup = soup(html, "html.parser")
     x = page_soup.find_all("div", {"class":"GDhqjd"})
     for y in x:
-        print(y.get_text())
+        sender = y.find("div", {"class":"YTbUzc"}).get_text()
+        time_stamp = ' '.join(y.find("div",{"class":"MuzmKe"}).get_text().split('\u202f'))
+        
+        msgs = y.find_all("div",{"class":"oIy2qc"})
+        msgs_list = []
+        for msg in msgs:
+            msgs_list.append(msg.get_text())
+
+        if (sender, time_stamp) not in chat_dic or chat_dic[(sender, time_stamp)] != msgs_list:
+            chat_dic[(sender, time_stamp)] = msgs_list
+
 
 
 while True:
@@ -139,8 +151,9 @@ while True:
             send_a_message = False
         
         scrape()
+        print(chat_dic)
             
-        time.sleep(5)
+        time.sleep(15)
 
    
     except:
