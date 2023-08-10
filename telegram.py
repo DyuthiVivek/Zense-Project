@@ -8,12 +8,15 @@ def send_a_message(msg):
 
 def get_last_msg_id():
     url = f'https://api.telegram.org/bot{token}/getUpdates'
-    return requests.post(url).json()['result'][-1]['message']['date']
+    return requests.post(url).json()['result'][-1]['update_id']
 
+def get_all_messages():
+    url = f'https://api.telegram.org/bot{token}/getUpdates'
+    return requests.post(url).json()
 
 def get_new_message():
     url = f'https://api.telegram.org/bot{token}/getUpdates'
     print(requests.post(url).json()['result'][-1]['message']['text'])
 
 #send_a_message("hi")
-print(get_last_msg_id())
+print(get_all_messages())

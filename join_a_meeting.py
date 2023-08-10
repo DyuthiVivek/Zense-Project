@@ -98,11 +98,12 @@ TurnOnCaptions.click()
 #Got it pop up
 driver.find_element("xpath", "/html/body/div[1]/div[3]/span/div[2]/div/div/div[2]/div/button").click()
 
-send_a_message = True
+#activate chat
+driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[11]/div/div/div[3]/div/div[3]/div/div/span/button").click()
+driver.implicitly_wait(200)
+    
 
 def send_a_message_in_chat(msg):
-    driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[11]/div/div/div[3]/div/div[3]/div/div/span/button").click()
-    driver.implicitly_wait(200)
     chat = driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[4]/div[2]/div/div[2]/div/div[2]/div[1]/div/label/textarea")           
     chat.send_keys(msg) 
     driver.implicitly_wait(200)
@@ -148,17 +149,28 @@ def compose_msg(chat_dic):
     
     return msg
 
+time.sleep(1)
+
 
 new_msg = []
 prev_chat = {}
+last_msg = telegram.get_last_msg_id()
 
 while True:
     get_cc()
 
-    if send_a_message:
-        send_a_message_in_chat("hello")
-        send_a_message = False
-    
+    if telegram.get_last_msg_id() != last_msg:
+        messages = telegram.get_all_messages()['result']
+        for i in range(len(messages)):
+            dic = messages[i]
+            if dic['update_id'] == last_msg:
+                messages = messages[i + 1 : ]
+                break
+        for m in messages:
+            send_a_message_in_chat(m['message']['text'])
+        last_msg = telegram.get_last_msg_id()
+
+
     time.sleep(2)
 
     new_msg = []
