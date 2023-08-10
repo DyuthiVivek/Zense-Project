@@ -10,11 +10,17 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import StaleElementReferenceException
+from urllib.request import Request, urlopen
+from bs4 import BeautifulSoup as soup
+
+
 
 import undetected_chromedriver as uc
 
 from quickstart import next_event_details
 dic = next_event_details()
+
+scrape_url = dic['link']
 meet_code = dic['link'][24:]
 print(meet_code)
 
@@ -101,22 +107,42 @@ TurnOnCaptions.click()
 driver.find_element("xpath", "/html/body/div[1]/div[3]/span/div[2]/div/div/div[2]/div/button").click()
 
 send_a_message = True
+
+def send_a_message_in_chat(msg):
+    driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[11]/div/div/div[3]/div/div[3]/div/div/span/button").click()
+    driver.implicitly_wait(200)
+    chat = driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[4]/div[2]/div/div[2]/div/div[2]/div[1]/div/label/textarea")           
+    chat.send_keys(msg) 
+    driver.implicitly_wait(200)
+    chat.send_keys(Keys.ENTER)
+
+def get_cc():
+    captions = driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[7]/div[1]/div[1]")
+    if "Dyuthi" in captions.text:
+        print(captions.text)
+
+def scrape():
+    html = driver.page_source
+    page_soup = soup(html, "html.parser")
+    x = page_soup.find_all("div", {"class":"GDhqjd"})
+    for y in x:
+        print(y.get_text())
+
+
 while True:
     try:
-        captions = driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[7]/div[1]/div[1]")
-        if "Dyuthi" in captions.text:
-            print(captions.text)
+
+        get_cc()
+
+        if send_a_message:
+            send_a_message_in_chat("hello")
+            send_a_message = False
+        
+        scrape()
+            
         time.sleep(5)
 
-        while send_a_message:
-            driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[11]/div/div/div[3]/div/div[3]/div/div/span/button").click()
-            driver.implicitly_wait(200)
-            chat = driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[4]/div[2]/div/div[2]/div/div[2]/div[1]/div/label/textarea")           
-            chat.send_keys("sending a message") 
-            driver.implicitly_wait(200)
-            chat.send_keys(Keys.ENTER)
-            send_a_message = False
-
+   
     except:
         continue
     #time.sleep(1)
