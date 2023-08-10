@@ -1,16 +1,8 @@
-import webbrowser
 import time
-import math
+import telegram
 # importing webdriver from selenium 
-from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import StaleElementReferenceException
-from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup as soup
 
 
@@ -123,40 +115,78 @@ def get_cc():
 
 chat_dic = {}
 
+
 def scrape():
     html = driver.page_source
     page_soup = soup(html, "html.parser")
     x = page_soup.find_all("div", {"class":"GDhqjd"})
+    
     for y in x:
         sender = y.find("div", {"class":"YTbUzc"}).get_text()
         time_stamp = ' '.join(y.find("div",{"class":"MuzmKe"}).get_text().split('\u202f'))
-        
         msgs = y.find_all("div",{"class":"oIy2qc"})
         msgs_list = []
+
         for msg in msgs:
             msgs_list.append(msg.get_text())
 
-        if (sender, time_stamp) not in chat_dic or chat_dic[(sender, time_stamp)] != msgs_list:
-            chat_dic[(sender, time_stamp)] = msgs_list
+        if (sender, time_stamp) not in chat_dic:
+            new_msg.append((sender, msgs_list))
+
+        elif chat_dic[(sender, time_stamp)] != msgs_list:
+            new_msg.append((sender, [msg for msg in msgs_list if msg not in chat_dic[(sender, time_stamp)]]))
+        
+        chat_dic[(sender, time_stamp)] = msgs_list
+
+def compose_msg(chat_dic):
+    msg = ""
+
+    for c in chat_dic:
+        msg += f'Sender: {c[0]}  Time: {c[1]}\n'
+        msg += '\n'.join(chat_dic[c])
+        msg += '\n\n'
+    
+    return msg
 
 
+new_msg = []
+prev_chat = {}
 
 while True:
-    try:
+    get_cc()
 
-        get_cc()
+    if send_a_message:
+        send_a_message_in_chat("hello")
+        send_a_message = False
+    
+    time.sleep(2)
 
-        if send_a_message:
-            send_a_message_in_chat("hello")
-            send_a_message = False
-        
-        scrape()
-        print(chat_dic)
-            
-        time.sleep(15)
+    new_msg = []
+
+    scrape()
+
+    for n in new_msg:
+        for p in n[1]:
+            if 'Dyuthi' in p:
+                msg = ""
+                for c in chat_dic:
+                    if c in prev_chat:
+                        if prev_chat[c] != chat_dic[c]:
+                            msg += f"Sender: {c[0]}  Time: {c[1]}\n"
+                            msg += '\n'.join(x for x in chat_dic[c] if x not in prev_chat[c])
+                            msg += '\n'
+                    else:
+                        msg += f"Sender: {c[0]}  Time: {c[1]}\n"
+                        msg += '\n'.join(chat_dic[c])
+                        msg += '\n'
+
+                prev_chat = chat_dic.copy()
+                telegram.send_a_message(msg)
+
+    time.sleep(1)
 
    
-    except:
-        continue
+    
+    
     #time.sleep(1)
 
