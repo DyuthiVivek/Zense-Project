@@ -4,11 +4,16 @@ token = '6526565187:AAFzvJUgnB-9Two9SSKyGcf7FlsDYkRmbFk'
 def send_a_message(msg):
     data = {'chat_id': 5430419326, 'text': msg}
     url = f'https://api.telegram.org/bot{token}/sendMessage'
-    print(requests.post(url, data).json())
+    requests.post(url, data).json()
 
-def get_messages():
+def get_last_msg_id():
     url = f'https://api.telegram.org/bot{token}/getUpdates'
-    print(requests.post(url).json())
+    return requests.post(url).json()['result'][-1]['message']['date']
+
+
+def get_new_message():
+    url = f'https://api.telegram.org/bot{token}/getUpdates'
+    print(requests.post(url).json()['result'][-1]['message']['text'])
 
 #send_a_message("hi")
-get_messages()
+print(get_last_msg_id())
