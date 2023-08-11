@@ -110,11 +110,12 @@ def send_a_message_in_chat(msg):
     chat.send_keys(Keys.ENTER)
 
 def get_cc():
-    captions = driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[7]/div[1]/div[1]")
-    if "Dyuthi" in captions.text:
+    try:
+        captions = driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[7]/div[1]/div[1]")
         print(captions.text)
+    except:
+        pass
 
-chat_dic = {}
 
 
 def scrape():
@@ -122,6 +123,7 @@ def scrape():
     page_soup = soup(html, "html.parser")
     x = page_soup.find_all("div", {"class":"GDhqjd"})
     
+    new_msg = []
     for y in x:
         sender = y.find("div", {"class":"YTbUzc"}).get_text()
         time_stamp = ' '.join(y.find("div",{"class":"MuzmKe"}).get_text().split('\u202f'))
@@ -138,45 +140,25 @@ def scrape():
             new_msg.append((sender, [msg for msg in msgs_list if msg not in chat_dic[(sender, time_stamp)]]))
         
         chat_dic[(sender, time_stamp)] = msgs_list
-
-def compose_msg(chat_dic):
-    msg = ""
-
-    for c in chat_dic:
-        msg += f'Sender: {c[0]}  Time: {c[1]}\n'
-        msg += '\n'.join(chat_dic[c])
-        msg += '\n\n'
-    
-    return msg
+    return new_msg
 
 time.sleep(1)
 
 
-new_msg = []
-prev_chat = {}
-last_msg = telegram.get_last_msg_id()
-
-while True:
-    get_cc()
-
-    if telegram.get_last_msg_id() != last_msg:
+def send_message_from_telegram(last_msg_id):
+    if telegram.get_last_msg_id() != last_msg_id:
         messages = telegram.get_all_messages()['result']
         for i in range(len(messages)):
             dic = messages[i]
-            if dic['update_id'] == last_msg:
+            if dic['update_id'] == last_msg_id:
                 messages = messages[i + 1 : ]
                 break
         for m in messages:
             send_a_message_in_chat(m['message']['text'])
-        last_msg = telegram.get_last_msg_id()
+        last_msg_id = telegram.get_last_msg_id()
+    return last_msg_id
 
-
-    time.sleep(2)
-
-    new_msg = []
-
-    scrape()
-
+def send_message_to_telegram(new_msg, prev_chat):
     for n in new_msg:
         for p in n[1]:
             if 'Dyuthi' in p:
@@ -194,11 +176,24 @@ while True:
 
                 prev_chat = chat_dic.copy()
                 telegram.send_a_message(msg)
+    return prev_chat
+
+chat_dic = {}
+new_msg = []
+prev_chat = {}
+last_msg_id = telegram.get_last_msg_id()
+
+
+while True:
+    get_cc()
+    last_msg_id = send_message_from_telegram(last_msg_id)
+
+    time.sleep(2)
+
+    new_msg = scrape()
+    prev_chat = send_message_to_telegram(new_msg, prev_chat)
 
     time.sleep(1)
 
    
     
-    
-    #time.sleep(1)
-

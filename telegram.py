@@ -18,5 +18,3 @@ def get_new_message():
     url = f'https://api.telegram.org/bot{token}/getUpdates'
     print(requests.post(url).json()['result'][-1]['message']['text'])
 
-#send_a_message("hi")
-print(get_all_messages())
