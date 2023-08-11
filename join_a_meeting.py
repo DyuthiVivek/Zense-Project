@@ -4,7 +4,7 @@ import telegram
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup as soup
-
+import tts
 
 
 import undetected_chromedriver as uc
@@ -155,7 +155,7 @@ def scrape():
 time.sleep(1)
 
 
-def send_message_from_telegram(last_msg_id):
+def message_from_telegram(last_msg_id):
     if telegram.get_last_msg_id() != last_msg_id:
         messages = telegram.get_all_messages()['result']
         for i in range(len(messages)):
@@ -164,7 +164,18 @@ def send_message_from_telegram(last_msg_id):
                 messages = messages[i + 1 : ]
                 break
         for m in messages:
-            send_a_message_in_chat(m['message']['text'])
+            if str(m['message']['text']).startswith("Chat:"):
+                m['message']['text'] = str(m['message']['text'][5:]).strip()
+                send_a_message_in_chat(m['message']['text'])
+            elif str(m['message']['text']).startswith("Speak:"):
+                driver.find_element("xpath","/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[11]/div/div/div[2]/div/div[1]/div/div[2]/span/button").click()
+                msg = str(m['message']['text'][6:]).strip()
+                tts.text_to_speech(msg)
+                time.sleep(1)
+                driver.find_element("xpath","/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[11]/div/div/div[2]/div/div[1]/div/div[2]/span/button").click()
+
+            else:
+                print("Nah")
         last_msg_id = telegram.get_last_msg_id()
     return last_msg_id
 
@@ -196,7 +207,9 @@ flag = True
 
 while True:
     flag = get_cc(flag)
-    last_msg_id = send_message_from_telegram(last_msg_id)
+
+    if telegram.get_last_msg_id() != last_msg_id:
+        last_msg_id = message_from_telegram(last_msg_id)
 
     time.sleep(2)
 
