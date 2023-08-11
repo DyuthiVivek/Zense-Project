@@ -109,14 +109,24 @@ def send_a_message_in_chat(msg):
     driver.implicitly_wait(200)
     chat.send_keys(Keys.ENTER)
 
-def get_cc():
-    try:
+def get_cc(flag):
+    captions = driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[7]/div[1]/div[1]")
+    if flag and ('dyuthi' in str(captions.text).lower() or 'duty' in str(captions.text).lower() or 'beauty' in str(captions.text).lower()):
+        msg = 'Alert! you were mentioned in the call. Find the transcript below:'
+        telegram.send_a_message(msg)
+        time.sleep(5)
         captions = driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[7]/div[1]/div[1]")
-        print(captions.text)
-    except:
-        pass
+        text = captions.text
 
+        telegram.send_a_message(text)
+        flag = False
 
+    elif 'dyuthi' not in str(captions.text).lower() and 'duty' not in str(captions.text).lower() and 'beauty' not in str(captions.text).lower():
+        flag = True
+
+    return flag
+
+        
 
 def scrape():
     html = driver.page_source
@@ -182,10 +192,10 @@ chat_dic = {}
 new_msg = []
 prev_chat = {}
 last_msg_id = telegram.get_last_msg_id()
-
+flag = True
 
 while True:
-    get_cc()
+    flag = get_cc(flag)
     last_msg_id = send_message_from_telegram(last_msg_id)
 
     time.sleep(2)
@@ -193,7 +203,6 @@ while True:
     new_msg = scrape()
     prev_chat = send_message_to_telegram(new_msg, prev_chat)
 
-    time.sleep(1)
 
    
     
