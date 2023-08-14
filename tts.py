@@ -7,4 +7,3 @@ def text_to_speech(msg):
     t1.save("welcome.mp3")   
     playsound("welcome.mp3")    
     os.remove("welcome.mp3")
-

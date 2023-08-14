@@ -110,20 +110,24 @@ def send_a_message_in_chat(msg):
     chat.send_keys(Keys.ENTER)
 
 def get_cc(flag):
-    captions = driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[7]/div[1]/div[1]")
-    if flag and ('dyuthi' in str(captions.text).lower() or 'duty' in str(captions.text).lower() or 'beauty' in str(captions.text).lower()):
-        msg = 'Alert! you were mentioned in the call. Find the transcript below:'
-        telegram.send_a_message(msg)
-        time.sleep(5)
+    try:
         captions = driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[7]/div[1]/div[1]")
-        text = captions.text
+        #print(captions.text)
+        if flag and ('dyuthi' in str(captions.text).lower() or 'duty' in str(captions.text).lower() or 'beauty' in str(captions.text).lower()):
+            msg = 'Alert! you were mentioned in the call. Find the transcript below:'
+            telegram.send_a_message(msg)
+            time.sleep(5)
+            captions = driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[7]/div[1]/div[1]")
+            text = captions.text
 
-        telegram.send_a_message(text)
-        flag = False
+            telegram.send_a_message(text)
+            flag = False
 
-    elif 'dyuthi' not in str(captions.text).lower() and 'duty' not in str(captions.text).lower() and 'beauty' not in str(captions.text).lower():
-        flag = True
-
+        elif 'dyuthi' not in str(captions.text).lower() and 'duty' not in str(captions.text).lower() and 'beauty' not in str(captions.text).lower():
+            flag = True
+    except:
+        pass
+    
     return flag
 
         
@@ -167,6 +171,7 @@ def message_from_telegram(last_msg_id):
             if str(m['message']['text']).startswith("Chat:"):
                 m['message']['text'] = str(m['message']['text'][5:]).strip()
                 send_a_message_in_chat(m['message']['text'])
+
             elif str(m['message']['text']).startswith("Speak:"):
                 driver.find_element("xpath","/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[11]/div/div/div[2]/div/div[1]/div/div[2]/span/button").click()
                 msg = str(m['message']['text'][6:]).strip()
@@ -205,16 +210,25 @@ prev_chat = {}
 last_msg_id = telegram.get_last_msg_id()
 flag = True
 
+file = open(f'{meet_code}','w')
+count = 0
 while True:
     flag = get_cc(flag)
 
-    if telegram.get_last_msg_id() != last_msg_id:
-        last_msg_id = message_from_telegram(last_msg_id)
+    last_msg_id = message_from_telegram(last_msg_id)
 
     time.sleep(2)
 
     new_msg = scrape()
     prev_chat = send_message_to_telegram(new_msg, prev_chat)
+
+    if count == 7:
+        captions = driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[7]/div[1]/div[1]")
+        file.write(captions.text)
+        file.write('\n')
+        count = 0
+    else:
+        count += 1
 
 
    
