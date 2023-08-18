@@ -1,6 +1,5 @@
 import time
 import telegram
-# importing webdriver from selenium 
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup as soup
@@ -210,8 +209,6 @@ prev_chat = {}
 last_msg_id = telegram.get_last_msg_id()
 flag = True
 
-file = open(f'{meet_code}','w')
-count = 0
 while True:
     flag = get_cc(flag)
 
@@ -222,14 +219,7 @@ while True:
     new_msg = scrape()
     prev_chat = send_message_to_telegram(new_msg, prev_chat)
 
-    if count == 7:
-        captions = driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[7]/div[1]/div[1]")
-        file.write(captions.text)
-        file.write('\n')
-        count = 0
-    else:
-        count += 1
-
+    
 
    
     
