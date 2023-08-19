@@ -38,6 +38,8 @@ Are you tired of endless meeting or classes that seem to take up most of your da
     - Turning off Two-Factor Authentication
     - Using `undetected_chromedriver`
 
+    Unfortunately, `undetected_chromedriver` is unable to connect with ChromeDriver at times. Thw workaround for this is to kill existing ChromeDriver process and wait for a few seconds.   
+
     
 - **Browser Level Notifications**
 
@@ -58,3 +60,5 @@ Are you tired of endless meeting or classes that seem to take up most of your da
 - **Intelligent response system:** Reduce user involvement further by using AI to provide context-sensitive responses during meetings.
 
 - **Advanced Personalization:** Customizing how the bot engages in different types of meetings.
+
+- **Virtual Avatar:** Creating an personal video avatar of you that can automatically respond to simple questions in the meeting.
