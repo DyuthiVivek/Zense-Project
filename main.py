@@ -4,6 +4,10 @@ from datetime import date, datetime
 from meet_functions import *
 from quickstart import next_event_details
 import telegram
+from subprocess import Popen
+import os
+import signal
+
 
 def get_time():
     now = datetime.now()
@@ -40,6 +44,10 @@ if __name__ == "__main__":
     last_msg_id = telegram.get_last_msg_id()
     flag = True
 
+    p = Popen('/home/dyuthi/Zense-Project/record.py', shell=False)
+    processId = p.pid
+    print("Yaya! - Process ID is", processId)
+
     while True:
         # print("Looping...")
         flag = get_cc(flag, driver)
@@ -49,9 +57,8 @@ if __name__ == "__main__":
         prev_chat = send_message_to_telegram(new_msg, prev_chat, chat_dic)
 
         if event_dic['end_time'][11:19].strip('T') <= get_time() and event_dic['end_time'][:10].strip('T') == str(date.today()):
-            close_driver(driver)
-            sys.exit()
-
+            print('meeting exited')
+            break
 
         if not(check_meeting(driver)):
             print('meeting exited')
@@ -60,6 +67,9 @@ if __name__ == "__main__":
         # print("After check_meeting...")
     
     close_driver(driver)
+    os.kill(processId, signal.SIGINT);
+    time.sleep(1)
+    print("Done")
     sys.exit()
 
 # fix telegram

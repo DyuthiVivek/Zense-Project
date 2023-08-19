@@ -1,5 +1,28 @@
+#!/usr/bin/python3.10
+
 import pyaudio
 import wave
+import signal
+import sys
+
+def cleanup():
+    stream.stop_stream()
+    stream.close()
+    p.terminate()
+
+    wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
+    wf.setnchannels(CHANNELS)
+    wf.setsampwidth(p.get_sample_size(FORMAT))
+    wf.setframerate(RATE)
+    wf.writeframes(b''.join(frames))
+    wf.close()
+
+def signal_handler(sig, frame):
+    print('You pressed Ctrl+C!')
+    cleanup()
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, signal_handler)
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
@@ -20,19 +43,9 @@ print("* recording")
 
 frames = []
 
-for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
+#for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
+while True:
     data = stream.read(CHUNK)
     frames.append(data)
 
 print("* done recording")
-
-stream.stop_stream()
-stream.close()
-p.terminate()
-
-wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
-wf.setnchannels(CHANNELS)
-wf.setsampwidth(p.get_sample_size(FORMAT))
-wf.setframerate(RATE)
-wf.writeframes(b''.join(frames))
-wf.close()
