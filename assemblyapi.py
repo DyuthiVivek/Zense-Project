@@ -14,7 +14,7 @@ headers = {
     "authorization": "0bd8f34e52ae49039d8bb4a0f6c8d280"
 }
 
-with open("testing.mp4", "rb") as f:
+with open("output.wav", "rb") as f:
   response = requests.post(base_url + "/upload",
                           headers=headers,
                           data=f)

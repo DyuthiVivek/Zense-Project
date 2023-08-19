@@ -39,19 +39,28 @@ if __name__ == "__main__":
     prev_chat = {}
     last_msg_id = telegram.get_last_msg_id()
     flag = True
-    
+
     while True:
+        # print("Looping...")
         flag = get_cc(flag, driver)
         last_msg_id = message_from_telegram(last_msg_id, driver)
         time.sleep(2)
         new_msg = scrape(driver, chat_dic)
         prev_chat = send_message_to_telegram(new_msg, prev_chat, chat_dic)
 
-        if event_dic['end_time'][11:19].strip('T') <= get_time():
+        if event_dic['end_time'][11:19].strip('T') <= get_time() and event_dic['end_time'][:10].strip('T') == str(date.today()):
             close_driver(driver)
             sys.exit()
 
-          
+
+        if not(check_meeting(driver)):
+            print('meeting exited')
+            break
+
+        # print("After check_meeting...")
+    
+    close_driver(driver)
+    sys.exit()
 
 # fix telegram
 # calendar api refresh

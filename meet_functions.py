@@ -1,11 +1,18 @@
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
+from selenium.common.exceptions import NoSuchElementException
 from bs4 import BeautifulSoup as soup
 import undetected_chromedriver as uc
 import time
 import telegram
 import tts
 from get_credentials import get_email, get_pwd
+import sys
 
 trigger_words = []
 with open('trigger_words.txt') as fp:
@@ -136,25 +143,29 @@ def scrape(driver, chat_dic):
     x = page_soup.find_all("div", {"class":"GDhqjd"})
     
     new_msg = []
-    for y in x:
-        sender = y.find("div", {"class":"YTbUzc"}).get_text()
-        time_stamp = ' '.join(y.find("div",{"class":"MuzmKe"}).get_text().split('\u202f'))
-        msgs = y.find_all("div",{"class":"oIy2qc"})
-        msgs_list = []
+    try:
+        for y in x:
+            sender = y.find("div", {"class":"YTbUzc"}).get_text()
+            time_stamp = ' '.join(y.find("div",{"class":"MuzmKe"}).get_text().split('\u202f'))
+            msgs = y.find_all("div",{"class":"oIy2qc"})
+            msgs_list = []
 
-        for msg in msgs:
-            msgs_list.append(msg.get_text())
+            for msg in msgs:
+                msgs_list.append(msg.get_text())
 
-        if (sender, time_stamp) not in chat_dic:
-            new_msg.append((sender, msgs_list))
+            if (sender, time_stamp) not in chat_dic:
+                new_msg.append((sender, msgs_list))
 
-        elif chat_dic[(sender, time_stamp)] != msgs_list:
-            new_msg.append((sender, [msg for msg in msgs_list if msg not in chat_dic[(sender, time_stamp)]]))
-        
-        chat_dic[(sender, time_stamp)] = msgs_list
+            elif chat_dic[(sender, time_stamp)] != msgs_list:
+                new_msg.append((sender, [msg for msg in msgs_list if msg not in chat_dic[(sender, time_stamp)]]))
+            
+            chat_dic[(sender, time_stamp)] = msgs_list
+    except:
+        pass
     return new_msg
 
 def get_cc(flag, driver):
+
     try:
         captions = driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[7]/div[1]/div[1]")
         #print(captions.text)
@@ -183,6 +194,7 @@ def get_cc(flag, driver):
     return flag
 
 def message_from_telegram(last_msg_id, driver):
+    
     if telegram.get_last_msg_id() != last_msg_id:
         messages = telegram.get_all_messages()['result']
         for i in range(len(messages)):
@@ -209,19 +221,59 @@ def message_from_telegram(last_msg_id, driver):
 def send_message_to_telegram(new_msg, prev_chat, chat_dic):
     for n in new_msg:
         for p in n[1]:
-            if 'Dyuthi' in p:
-                msg = ""
-                for c in chat_dic:
-                    if c in prev_chat:
-                        if prev_chat[c] != chat_dic[c]:
+            for t in trigger_words:
+                if t in p.lower():
+                    msg = ""
+                    for c in chat_dic:
+                        if c in prev_chat:
+                            if prev_chat[c] != chat_dic[c]:
+                                msg += f"Sender: {c[0]}  Time: {c[1]}\n"
+                                msg += '\n'.join(x for x in chat_dic[c] if x not in prev_chat[c])
+                                msg += '\n'
+                        else:
                             msg += f"Sender: {c[0]}  Time: {c[1]}\n"
-                            msg += '\n'.join(x for x in chat_dic[c] if x not in prev_chat[c])
+                            msg += '\n'.join(chat_dic[c])
                             msg += '\n'
-                    else:
-                        msg += f"Sender: {c[0]}  Time: {c[1]}\n"
-                        msg += '\n'.join(chat_dic[c])
-                        msg += '\n'
 
-                prev_chat = chat_dic.copy()
-                telegram.send_a_message(msg)
+                    prev_chat = chat_dic.copy()
+                    telegram.send_a_message(msg)
+                    break
     return prev_chat
+
+def is_element_appeared(element_Xpath, driver, timeout = 2):
+    try:
+        wait = WebDriverWait(driver, timeout=timeout)
+        driver.implicitly_wait(timeout)
+        # print("In webdriverwait...")
+        driver.find_element(By.XPATH,element_Xpath);
+        #WebDriverWait(driver, timeout).until(EC.visibility_of_element_located((By.XPATH, element_Xpath)))
+        return True
+    except Exception as ex:
+        # print("In webdriverwait exception", ex)
+        #raise RuntimeError("Something went wrong!!")
+        return False
+
+def check_meeting(driver):
+    try:
+        # print("Before is_element_appeared - 1")
+        if is_element_appeared("/html/body/div[1]/c-wiz/div/div/div[1]/div[2]/div/button",driver):
+           #driver.find_element("xpath", "/html/body/div[1]/c-wiz/div/div/div[1]/div[2]/div/button")
+            # print("Found! - 1")
+            return False
+    except:
+        # print("exception! - 1")
+        pass
+
+    try:
+        # print("Before is_element_appeared - 2")
+        if is_element_appeared("/html/body/c-wiz/div/div[2]/div/div[1]/div[3]/div/div[1]/div[1]/div/button",driver):
+            #driver.find_element("xpath", "/html/body/c-wiz/div/div[2]/div/div[1]/div[3]/div/div[1]/div[1]/div/button")
+            #print("Exiting...")
+            #sys.exit()
+            # print("Found! - 2")
+            return False
+    except:
+        # print("exception! - 2")
+        pass
+        
+    return True
