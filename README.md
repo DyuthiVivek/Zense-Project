@@ -1,8 +1,8 @@
-# Auto-Meet
+# AutoMeet
 
 ## Overview
 
-Are you tired of endless meeting or classes that seem to take up most of your day? Wish you could be more productive while still appearing fully engaged? Look no further! Introducing Auto-Meet, a Google Meet Automation tool. Seamlessly integrating with Google Calendar, it ensures timely meeting attendance. From intelligent alerts to voice response, it enables selective engagement and even records meetings and provides a transcript and summary for documentation. 
+Are you tired of endless meeting or classes that seem to take up most of your day? Wish you could be more productive while still appearing fully engaged? Look no further! Introducing AutoMeet, a Google Meet Automation tool. Seamlessly integrating with Google Calendar, it ensures timely meeting attendance. From intelligent alerts to voice response, it enables selective engagement and even records meetings and provides a transcript and summary for future reference. 
 
 ## Objectives
 
@@ -17,7 +17,7 @@ Are you tired of endless meeting or classes that seem to take up most of your da
 1. **Google Calendar API** to fetch details of upcoming meetings
 2. **Selenium** to automate all interactions will Google Meet
 3. **BeautifulSoup** to scrape live captions and chat box messages
-4. **Telegram Bot API** to send and receive messages from the user
+4. **Telegram Bot API** to send and receive alerts/responses to and from the user
 5. **Tortoise-TTS module** to generate your voice from text
 6. **ConfigParserCrypt** to store encrypted user credentials in a config file
 7. **PyAudio** to record meeting audio
@@ -48,13 +48,13 @@ Are you tired of endless meeting or classes that seem to take up most of your da
 
 - **Tool for meeting summary**
 
-    Finding an available free tool for meeting transcription and summary generation was a hard task.
+    Identifying a free tool for meeting transcription and summary generation was challenging. Most of the popular ones like Tactiq and Laxis offer only limited free transcriptions.
 
 
 ## Future Scope
 
-- **Integration with More Platforms:** Expand the bot's compatibility to include other popular video conferencing platforms, broadening its usability and catering to a wider audience.
+- **Integration with More Platforms:** Expand the bot's compatibility to include other popular video conferencing platforms like Zoom and Teams to cater to a wider audience.
 
-- **Intelligent response system:** Reduce the required user involvement further by using AI to provide context-sensitive responses during meetings.
+- **Intelligent response system:** Reduce user involvement further by using AI to provide context-sensitive responses during meetings.
 
 - **Advanced Personalization:** Customizing how the bot engages in different types of meetings.
