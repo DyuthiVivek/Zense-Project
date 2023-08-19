@@ -50,3 +50,11 @@ Are you tired of endless meeting or classes that seem to take up most of your da
 
     Finding an available free tool for meeting transcription and summary generation was a hard task.
 
+
+## Future Scope
+
+- **Integration with More Platforms:** Expand the bot's compatibility to include other popular video conferencing platforms, broadening its usability and catering to a wider audience.
+
+- **Intelligent response system:** Reduce the required user involvement further by using AI to provide context-sensitive responses during meetings.
+
+- **Advanced Personalization:** Customizing how the bot engages in different types of meetings.
