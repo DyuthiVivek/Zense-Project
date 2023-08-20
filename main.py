@@ -7,6 +7,7 @@ import telegram
 from subprocess import Popen
 import os
 import signal
+from assemblyapi import get_transcript
 
 
 def get_time():
@@ -67,9 +68,10 @@ if __name__ == "__main__":
         # print("After check_meeting...")
     
     close_driver(driver)
-    os.kill(processId, signal.SIGINT);
+    os.kill(processId, signal.SIGINT)
     time.sleep(1)
     print("Done")
+    get_transcript()
     sys.exit()
 
 # fix telegram
