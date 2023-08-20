@@ -39,7 +39,7 @@ Are you tired of endless meeting or classes that seem to take up most of your da
     - Turning off Two-Factor Authentication
     - Using `undetected_chromedriver`
 
-    Unfortunately, `undetected_chromedriver` is unable to connect with ChromeDriver at times. The workaround for this is to kill any existing ChromeDriver process and wait for a few seconds.   
+    Unfortunately, `undetected_chromedriver` is unable to connect with ChromeDriver at times. The workaround for this is to kill any existing ChromeDriver process and wait for a few seconds. It also seems to be more stable with python version 3.10.  
 
     
 - **Browser Level Notifications**
