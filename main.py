@@ -76,5 +76,3 @@ if __name__ == "__main__":
 
 # fix telegram
 # calendar api refresh
-# property file, password encryption
-# will the program be running all the time?
