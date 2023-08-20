@@ -21,7 +21,8 @@ Are you tired of endless meeting or classes that seem to take up most of your da
 5. **Tortoise-TTS module** to generate your voice from text
 6. **ConfigParserCrypt** to store encrypted user credentials in a config file
 7. **PyAudio** to record meeting audio
-8. **AssemblyAI API** to generate a meeting transcript and a summary
+8. **Popen** and **Signal** to start recording audio as a subprocess and send a stop recording signal
+9. **AssemblyAI API** to generate a meeting transcript and a summary
 
 ## Challenges 
 
