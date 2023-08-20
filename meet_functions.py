@@ -14,11 +14,13 @@ import tts
 from get_credentials import get_email, get_pwd
 import sys
 
+# get list of trigger words from .txt file 
 trigger_words = []
 with open('trigger_words.txt') as fp:
     for line in fp:
         trigger_words.append(str(line).strip('\n'))
 
+# initialize WebDriver
 def initialize_driver():
     opt = Options()
     opt.add_argument("--disable-infobars")
@@ -45,9 +47,11 @@ def initialize_driver():
     )
     return driver
 
+# close Web Driver
 def close_driver(driver):
     driver.close()
 
+# Sign in to Google
 def sign_in_to_google(driver):
     url = 'https://accounts.google.com/signin/v2/identifier?ltmpl=meet&continue=https%3A%2F%2Fmeet.google.com%3Fhs%3D193&&flowName=GlifWebSignIn&flowEntry=ServiceLogin'
     driver.get(url)
@@ -55,17 +59,19 @@ def sign_in_to_google(driver):
     SignIn = driver.find_element("id","identifierId") 
 
     # clicking on the button 
+    # get email from encrypted file
     SignIn.send_keys(str(get_email()))
     SignIn.send_keys(Keys.ENTER)
 
     driver.implicitly_wait(10)
 
     # password field
+    # get password from encrypted file
     EnterPass = driver.find_element("xpath","//*[@id='password']/div[1]/div/div[1]/input")
     EnterPass.send_keys(str(get_pwd()))
     EnterPass.send_keys(Keys.ENTER)
 
-
+# Enter meeting code 
 def enter_meet_code(driver, meet_code):
     EnterCode = driver.find_element("xpath","/html/body/c-wiz/div/div[2]/div/div[1]/div[3]/div/div[2]/div[1]/label/input")
     EnterCode.send_keys(meet_code) 
@@ -74,28 +80,33 @@ def enter_meet_code(driver, meet_code):
 
     driver.implicitly_wait(200)
 
+# Mute microphone
 def mute(driver):
     driver.find_element("xpath", "/html/body/div[1]/c-wiz/div/div/div[14]/div[3]/div/div[2]/div[4]/div/div/div[1]/div[1]/div/div[6]/div[1]/div/div/div[1]").click()
 
+# Turn off the camera
 def turn_off_video(driver):
     driver.find_element("xpath", "/html/body/div[1]/c-wiz/div/div/div[14]/div[3]/div/div[2]/div[4]/div/div/div[1]/div[1]/div/div[6]/div[2]/div/div[1]").click()
 
+# Press on join meeting button
 def join_meeting(driver):
     driver.find_element("xpath", "/html/body/div[1]/c-wiz/div/div/div[14]/div[3]/div/div[2]/div[4]/div/div/div[2]/div[1]/div[2]/div[1]/div[1]/button").click()
 
-
+# Turn on closed captioning
 def turn_on_CC(driver):
     TurnOnCaptions = driver.find_element("xpath","/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[11]/div/div/div[2]/div/div[3]/span/button")
     TurnOnCaptions.click()
 
+# Close a pop up
 def close_pop_up(driver):
     driver.find_element("xpath", "/html/body/div[1]/div[3]/span/div[2]/div/div/div[2]/div/button").click()
 
+# Open Chat Box
 def activate_chat(driver):
     driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[11]/div/div/div[3]/div/div[3]/div/div/span/button").click()
     driver.implicitly_wait(200)
 
-
+# function to call initializing driver till meeting join and init stuff
 def initial_stuff(meet_code):
     # initialize selenium driver
     driver = initialize_driver()
@@ -129,14 +140,14 @@ def initial_stuff(meet_code):
 
     return driver
     
-
+# Send a message in the Chat Box
 def send_a_message_in_chat(msg, driver):
     chat = driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[4]/div[2]/div/div[2]/div/div[2]/div[1]/div/label/textarea")           
     chat.send_keys(msg) 
     driver.implicitly_wait(200)
     chat.send_keys(Keys.ENTER)
 
-
+# Scrape the Chat Box
 def scrape(driver, chat_dic):
     html = driver.page_source
     page_soup = soup(html, "html.parser")
@@ -152,7 +163,8 @@ def scrape(driver, chat_dic):
 
             for msg in msgs:
                 msgs_list.append(msg.get_text())
-
+            
+            # append only new messages to ensure that messages sent to the user are not sent again
             if (sender, time_stamp) not in chat_dic:
                 new_msg.append((sender, msgs_list))
 
@@ -164,25 +176,31 @@ def scrape(driver, chat_dic):
         pass
     return new_msg
 
+# Get Closed Captions
 def get_cc(flag, driver):
 
     try:
+        # get the captions text
         captions = driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[7]/div[1]/div[1]")
         #print(captions.text)
         if flag:
             for t in trigger_words:
+                # check if any trigger words are in the text
                 if t in str(captions.text).lower():
                     msg = 'Alert! a trigger word was mentioned in the call. Find the transcript below:'
                     telegram.send_a_message(msg)
-                    time.sleep(3)
+                    time.sleep(2)
                     captions = driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[7]/div[1]/div[1]")
                     text = captions.text
 
+                    # send the user an alert with the transcript
                     telegram.send_a_message(text)
                     flag = False
                     break
 
         else:
+            # to ensure that once an alert is sent, it should not send the alert again for the same text
+            # since we are getting all the captions text at once
             for t in trigger_words:
                 if t in str(captions.text).lower():
                     break
@@ -193,8 +211,9 @@ def get_cc(flag, driver):
     
     return flag
 
+# Get messages from user in telegram
 def message_from_telegram(last_msg_id, driver):
-    
+    # if new message detected
     if telegram.get_last_msg_id() != last_msg_id:
         messages = telegram.get_all_messages()['result']
         for i in range(len(messages)):
@@ -203,22 +222,31 @@ def message_from_telegram(last_msg_id, driver):
                 messages = messages[i + 1 : ]
                 break
         for m in messages:
+
+            # if the user wants to send this message in chat
             if str(m['message']['text']).startswith("Chat:"):
                 m['message']['text'] = str(m['message']['text'][5:]).strip()
                 send_a_message_in_chat(m['message']['text'], driver)
 
+            # if the user wants it to be spoken
             elif str(m['message']['text']).startswith("Speak:"):
                 driver.find_element("xpath","/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[11]/div/div/div[2]/div/div[1]/div/div[2]/span/button").click()
                 msg = str(m['message']['text'][6:]).strip()
+
+                # convert text to speech using Google TTS
                 tts.text_to_speech(msg)
                 time.sleep(1)
                 driver.find_element("xpath","/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[11]/div/div/div[2]/div/div[1]/div/div[2]/span/button").click()
 
+        # update last message ID
         last_msg_id = telegram.get_last_msg_id()
 
     return last_msg_id
 
+# If trigger word mentioned in chat, sending to telegram
+# Sending the sender of the message and timestamp as well
 def send_message_to_telegram(new_msg, prev_chat, chat_dic):
+    # ensuring that messages already sent are not sent again
     for n in new_msg:
         for p in n[1]:
             for t in trigger_words:
@@ -240,6 +268,7 @@ def send_message_to_telegram(new_msg, prev_chat, chat_dic):
                     break
     return prev_chat
 
+# checking if return to home screen element is appearing
 def is_element_appeared(element_Xpath, driver, timeout = 2):
     try:
         wait = WebDriverWait(driver, timeout=timeout)
@@ -253,7 +282,10 @@ def is_element_appeared(element_Xpath, driver, timeout = 2):
         #raise RuntimeError("Something went wrong!!")
         return False
 
+# check if meeting has ended yet 
 def check_meeting(driver):
+
+    # check if return to home screen button is present
     try:
         # print("Before is_element_appeared - 1")
         if is_element_appeared("/html/body/div[1]/c-wiz/div/div/div[1]/div[2]/div/button",driver):
@@ -263,7 +295,8 @@ def check_meeting(driver):
     except:
         # print("exception! - 1")
         pass
-
+    
+    # check if home screen present
     try:
         # print("Before is_element_appeared - 2")
         if is_element_appeared("/html/body/c-wiz/div/div[2]/div/div[1]/div[3]/div/div[1]/div[1]/div/button",driver):
@@ -275,5 +308,6 @@ def check_meeting(driver):
     except:
         # print("exception! - 2")
         pass
-        
+
+    # the meeting has not ended 
     return True

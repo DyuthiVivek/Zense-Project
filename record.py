@@ -5,6 +5,7 @@ import wave
 import signal
 import sys
 
+# stop recording and write to output.wav
 def cleanup():
     stream.stop_stream()
     stream.close()
@@ -17,6 +18,7 @@ def cleanup():
     wf.writeframes(b''.join(frames))
     wf.close()
 
+# if stop recording detected
 def signal_handler(sig, frame):
     print('stopped recording')
     cleanup()
@@ -43,7 +45,7 @@ print("started recording")
 
 frames = []
 
-#for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
+# record
 while True:
     data = stream.read(CHUNK)
     frames.append(data)

@@ -2,7 +2,7 @@ from __future__ import print_function
 
 import datetime
 import os.path
-
+import sys
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -12,7 +12,7 @@ from googleapiclient.errors import HttpError
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 
-
+# fetch details of next event using Google Calendar API
 def next_event_details():
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
@@ -45,6 +45,7 @@ def next_event_details():
         if not events:
             return None
         
+        # create a dictionary with details of the nect upcoming event
         next_event_details = {}
 
         event = events[0]
@@ -54,11 +55,16 @@ def next_event_details():
         next_event_details['start_time'] = start
         next_event_details['end_time'] = end
         # next_event_details['details'] = event['summary']
-        next_event_details['link'] = event['hangoutLink']
+        try:
+            next_event_details['link'] = event['hangoutLink']
+        except:
+            print('No meeting link in upcoming event')
+            sys.exit()
+
         return next_event_details
 
     except HttpError as error:
-        print('An error occurred: %s' % error)
+        print('An error occurred:', error)
 
-
+# reference link
 # https://developers.google.com/calendar/api/quickstart/python

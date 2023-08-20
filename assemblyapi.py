@@ -2,6 +2,7 @@ import requests
 import json
 import time
 
+# given the voice recording in output.wav, generates the transcript and summary
 def get_transcript():
   base_url = "https://api.assemblyai.com/v2"
 

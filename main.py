@@ -9,7 +9,7 @@ import os
 import signal
 from assemblyapi import get_transcript
 
-
+# function to get current time
 def get_time():
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
@@ -26,6 +26,7 @@ if __name__ == "__main__":
     if not(event_dic['start_time'][:10].strip('T') == str(date.today())):
         sys.exit()
     
+    # not yet time for the meeting
     while True:
         if event_dic['start_time'][11:19].strip('T') <= get_time():
             break
@@ -34,9 +35,10 @@ if __name__ == "__main__":
 
             time.sleep(30)
     
-
+    # get meet code from event details
     meet_code = event_dic['link'][24:]
 
+    # initialize driver, join meeting, turn on CC and chat 
     driver = initial_stuff(meet_code)
 
     chat_dic = {}
@@ -45,32 +47,50 @@ if __name__ == "__main__":
     last_msg_id = telegram.get_last_msg_id()
     flag = True
 
+    # start recording audio
     p = Popen('/home/dyuthi/Zense-Project/record.py', shell=False)
     processId = p.pid
-    # print("Yaya! - Process ID is", processId)
+    # print("Process ID is", processId)
 
     while True:
         # print("Looping...")
+
+        # get CC
         flag = get_cc(flag, driver)
+
+        # get the last message from telegram
         last_msg_id = message_from_telegram(last_msg_id, driver)
         time.sleep(2)
+
+        # scrape chatbox
         new_msg = scrape(driver, chat_dic)
+
+        # send any messages to telegram
         prev_chat = send_message_to_telegram(new_msg, prev_chat, chat_dic)
 
+        # if meeting end time reached, exit the meeting
         if event_dic['end_time'][11:19].strip('T') <= get_time() and event_dic['end_time'][:10].strip('T') == str(date.today()):
             print('meeting exited')
             break
-
+        
+        # check if the meeting has been ended
         if not(check_meeting(driver)):
             print('meeting exited')
             break
 
         # print("After check_meeting...")
     
+    # outside the meeting
+
+    # close driver
     close_driver(driver)
+
+    # stop recording
     os.kill(processId, signal.SIGINT)
     time.sleep(1)
     print("Done")
+
+    # print the transcript and summary
     get_transcript()
     sys.exit()
 

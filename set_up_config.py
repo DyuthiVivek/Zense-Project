@@ -3,12 +3,15 @@ from configparser_crypt import ConfigParserCrypt
 file = 'config.encrypted'
 conf_file = ConfigParserCrypt()
 
+# Setting up config file
+
 # Create new AES key
 conf_file.generate_key()
 # Don't forget to backup your key somewhere
 aes_key = conf_file.aes_key
-# Use like normal configparser class
 conf_file.add_section('user')
+
+# Add your email ID and password
 conf_file['user']['email'] = 'Your mail ID here'
 conf_file['user']['pwd'] = 'Your password here'
 
