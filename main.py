@@ -47,7 +47,7 @@ if __name__ == "__main__":
 
     p = Popen('/home/dyuthi/Zense-Project/record.py', shell=False)
     processId = p.pid
-    print("Yaya! - Process ID is", processId)
+    # print("Yaya! - Process ID is", processId)
 
     while True:
         # print("Looping...")

@@ -14,9 +14,6 @@ SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 
 
 def next_event_details():
-    """Shows basic usage of the Google Calendar API.
-    Prints the start and name of the next 10 events on the user's calendar.
-    """
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first

@@ -18,7 +18,7 @@ def cleanup():
     wf.close()
 
 def signal_handler(sig, frame):
-    print('You pressed Ctrl+C!')
+    print('stopped recording')
     cleanup()
     sys.exit(0)
 
@@ -39,7 +39,7 @@ stream = p.open(format=FORMAT,
                 input=True,
                 frames_per_buffer=CHUNK)
 
-print("* recording")
+print("started recording")
 
 frames = []
 
@@ -48,4 +48,3 @@ while True:
     data = stream.read(CHUNK)
     frames.append(data)
 
-print("* done recording")
