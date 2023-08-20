@@ -18,11 +18,12 @@ Are you tired of endless meeting or classes that seem to take up most of your da
 2. **Selenium** to automate all interactions will Google Meet
 3. **BeautifulSoup** to scrape live captions and chat box messages
 4. **Telegram Bot API** to send and receive alerts/responses to and from the user
-5. **Tortoise-TTS module** to generate your voice from text
+5. **GTTS module** to generate speech from text
 6. **ConfigParserCrypt** to store encrypted user credentials in a config file
 7. **PyAudio** to record meeting audio
 8. **Popen** and **Signal** to start recording audio as a subprocess and send a stop recording signal
 9. **AssemblyAI API** to generate a meeting transcript and a summary
+10. **Smtplib** and **Email Python Library** to mail the transcript and summary
 
 ## Challenges 
 
@@ -48,6 +49,10 @@ Are you tired of endless meeting or classes that seem to take up most of your da
 
     This was solved using: 
     `driver.execute_cdp_cmd()`
+
+- **Your voice TTS**
+
+    I tried using a module called Tortoise-TTS to generate text-to-speech for my own voice. Unfortunately, despite adding many voice samples, my voice was not replicated as this module was trained with American accents.  The audio also took a long time to generate.
 
 - **Tool for meeting summary**
 

@@ -8,6 +8,7 @@ from subprocess import Popen
 import os
 import signal
 from assemblyapi import get_transcript
+from mail import send_mail
 
 # function to get current time
 def get_time():
@@ -91,7 +92,14 @@ if __name__ == "__main__":
     print("Done")
 
     # print the transcript and summary
-    get_transcript()
+    content = get_transcript()
+    mail_body = "Transcription:\n" + content['Transcription'] + '\n\n' + 'Summary:\n' + content['Summary']
+    mail_subject = 'Transcript and summary from '
+    if 'details' in event_dic:
+        mail_subject += event_dic['details']
+        mail_subject += ' '
+    mail_subject += event_dic['start_time']
+    send_mail(mail_body, mail_subject)
     sys.exit()
 
 # fix telegram

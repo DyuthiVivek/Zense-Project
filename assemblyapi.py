@@ -35,11 +35,17 @@ def get_transcript():
 
     if transcription_result['status'] == 'completed':
       summary = transcription_result.get('summary', '')
-      # print("Transcription completed!")
-      print(f"Transcription: {transcription_result['text']}")
-      print()
-      print(f"Summary: {summary}")
-      break
+      print("Transcription completed!")
+
+      dic = {}
+      dic['Transcription'] = transcription_result['text']
+      dic['Summary'] = summary
+
+      return dic
+      # print(f"Transcription: {transcription_result['text']}")
+      # print()
+      # print(f"Summary: {summary}")
+      # break
 
     elif transcription_result['status'] == 'error':
       print("Transcription failed")

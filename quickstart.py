@@ -54,7 +54,11 @@ def next_event_details():
 
         next_event_details['start_time'] = start
         next_event_details['end_time'] = end
-        # next_event_details['details'] = event['summary']
+
+        try:
+            next_event_details['details'] = event['summary']
+        except:
+            pass
         try:
             next_event_details['link'] = event['hangoutLink']
         except:
