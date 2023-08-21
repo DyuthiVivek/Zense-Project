@@ -6,10 +6,10 @@ Are you tired of endless meeting or classes that seem to take up most of your da
 
 ## Objectives
 
-- **Automated meeting attendance:** Automatically joining meetings at scheduled time
-- **Real time engagement:** Intelligent alerts based on trigger words and response back to them
-- **Meeting Documentation:** Record audio, transcribe meeting content and generate a summary
-- **Efficient time management and convenience:** Attend specific portions of the meeting (or None) but still ensure your participation and attendance
+- **Automated meeting attendance:** Automatically joining meetings at scheduled time.
+- **Real time engagement:** Intelligent alerts based on trigger words. Receive live transcript and a screenshot, and respond back to them.
+- **Meeting Documentation:** Record audio, transcribe meeting content and generate a summary.
+- **Efficient time management and convenience:** Attend specific portions of the meeting (or None) but still ensure your participation and attendance.
 
 
 ## Implementation and Tech Stack
@@ -48,7 +48,7 @@ Are you tired of endless meeting or classes that seem to take up most of your da
 
 8. Sign up at  https://www.assemblyai.com/dashboard/signup and get your API key. Paste it in `set_up_config.py`.
 
-9. Go to telegram and search for @BotFather. Follow the displayed steps to create a new bot. Paste the API token at `set_up_config.py`.
+9. Go to telegram and search for @BotFather. Follow the displayed steps to create a new bot. Paste the API token at `set_up_config.py`. Add your chat ID in `telegram.py`.
 
     You will be required to send a message to the bot the first time to complete authentication.
 
@@ -81,23 +81,25 @@ Are you tired of endless meeting or classes that seem to take up most of your da
     - Turning off Two-Factor Authentication
     - Using `undetected_chromedriver`
 
-    Unfortunately, `undetected_chromedriver` is unable to connect with ChromeDriver at times. The workaround for this is to kill any existing ChromeDriver process and wait for a few seconds. It also seems to be more stable with python version 3.10.  
+    `undetected_chromedriver` is unable to connect with ChromeDriver at times. The workaround for this is to kill any existing ChromeDriver process and wait for a few seconds. It appears to be more stable with python version 3.10.  
 
     
 - **Browser Level Notifications**
 
-    They include notifications such as: *"Allow/Decline camera access"* and *"Allow/Decline microphone access"*. The recommended method of solving this problem, using Chrome Options did not seem to be working in this scenario. 
+    Includes notifications such as: *"Allow/Decline camera access"* and *"Allow/Decline microphone access"*. The recommended method of solving this problem, using Chrome Options did not work in this scenario. 
 
     This was solved using: 
     `driver.execute_cdp_cmd()`
 
 - **Your voice TTS**
 
-    I tried using a module called Tortoise-TTS to generate text-to-speech for my own voice. Unfortunately, despite adding many voice samples, my voice was not replicated as this module was trained with American accents.  Tortoise also takes a long time to generate audio, making it unviable for realtime answers in meetings.
+    Tortoise-TTS module generates text-to-speech for your own voice. Despite adding many voice samples, my voice was not replicated as this module was trained with American accents.  Tortoise also takes a long time to generate audio, making it unviable for realtime responses in meetings.
 
-- **Tool for meeting summary**
+- **Tool for meeting transcript and summary**
 
-    Identifying a free tool for meeting transcription and summary generation was challenging. Most of the popular ones like Tactiq and Laxis offer only limited free transcriptions.
+    Identifying a free tool for meeting transcription and summary generation was challenging. Most of the popular ones like Tactiq and Laxis offer only limited free transcriptions. Obtaining the transcript from the live captions in Google Meet by scraping the captions periodically resulted in occasional overlapping and missed content.
+
+    This problem was solved by recording the audio and using AssemblyAI to generate the transcript and summary.
 
 
 ## Future Scope

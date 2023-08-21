@@ -187,14 +187,18 @@ def get_cc(flag, driver):
             for t in trigger_words:
                 # check if any trigger words are in the text
                 if t in str(captions.text).lower():
-                    msg = 'Alert! a trigger word was mentioned in the call. Find the transcript below:'
+                    msg = 'Trigger word alert!'
                     telegram.send_a_message(msg)
                     time.sleep(2)
+
+                    # take screenshot
+                    driver.save_screenshot("image.png")
                     captions = driver.find_element("xpath", "/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[7]/div[1]/div[1]")
                     text = captions.text
 
                     # send the user an alert with the transcript
                     telegram.send_a_message(text)
+                    telegram.send_photo()
                     flag = False
                     break
 
