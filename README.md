@@ -32,25 +32,21 @@ Are you tired of endless meeting or classes that seem to take up most of your da
 2. Ensure that python3.10 is installed.
 3. Create a virtual environment.
 
-`virtualenv -p <path to python3.10> venv`
+    > `virtualenv -p <path to python3.10> venv`
 
 4. Activate the virtual environment.
 
-`source venv/bin/activate`
+    > `source venv/bin/activate`
 
 5. Install requirements.
 
-`pip install -r requirements.txt`
+    > `pip install -r requirements.txt`
 
 6. Turn off Two-Factor Authentication for the account you want to join the meeting with.
 
 7. Enter your email ID and password in `set_up_config.py`.
 
-8. Sign up at 
-
-https://www.assemblyai.com/dashboard/signup
-
-and get your API key. Paste it in `set_up_config.py`.
+8. Sign up at  https://www.assemblyai.com/dashboard/signup and get your API key. Paste it in `set_up_config.py`.
 
 9. Go to telegram and search for @BotFather. Follow the displayed steps to create a new bot. Paste the API token at `set_up_config.py`.
 
@@ -58,11 +54,7 @@ You will be required to send a message to the bot the first time to complete aut
 
 10. Run `set_up_config.py`. Now all your credentials will be saved in an encrypted config file. Paste the AES key that is printed in `get_credentials.py`. 
 
-11. Go to 
-
-https://developers.google.com/calendar/api/quickstart/python
-
-and follow the given steps to create a Google Cloud Project and enable Google Calendar API. A JSON file will be downloaded. Save it as `credentials.json` and move it to the current working directory.
+11. Go to https://developers.google.com/calendar/api/quickstart/python and follow the given steps to create a Google Cloud Project and enable Google Calendar API. A JSON file will be downloaded. Save it as `credentials.json` and move it to the current working directory.
 
 You will be required to sign in to your account when running the program for the first time to complete authentication.
 
