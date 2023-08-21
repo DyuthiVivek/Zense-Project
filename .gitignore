@@ -4,3 +4,4 @@ config.encrypted
 *.log
 *.wav
 session.session
+*.png
