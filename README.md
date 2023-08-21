@@ -21,9 +21,54 @@ Are you tired of endless meeting or classes that seem to take up most of your da
 5. **GTTS module** to generate speech from text
 6. **ConfigParserCrypt** to store encrypted user credentials in a config file
 7. **PyAudio** to record meeting audio
-8. **Popen** and **Signal** to start recording audio as a subprocess and send a stop recording signal
+8. **Popen** and **Signal** to start recording audio as a subprocess and stop recording
 9. **AssemblyAI API** to generate a meeting transcript and a summary
 10. **Smtplib** and **Email Python Library** to mail the transcript and summary
+
+
+## Installation
+
+1. Clone/download this repository.
+2. Ensure that python3.10 is installed.
+3. Create a virtual environment.
+
+`virtualenv -p <path to python3.10> venv`
+
+4. Activate the virtual environment.
+
+`source venv/bin/activate`
+
+5. Install requirements.
+
+`pip install -r requirements.txt`
+
+6. Turn off Two-Factor Authentication for the account you want to join the meeting with.
+
+7. Enter your email ID and password in `set_up_config.py`.
+
+8. Sign up at 
+
+https://www.assemblyai.com/dashboard/signup
+
+and get your API key. Paste it in `set_up_config.py`.
+
+9. Go to telegram and search for @BotFather. Follow the displayed steps to create a new bot. Paste the API token at `set_up_config.py`.
+
+You will be required to send a message to the bot the first time to complete authentication.
+
+10. Run `set_up_config.py`. Now all your credentials will be saved in an encrypted config file. Paste the AES key that is printed in `get_credentials.py`. 
+
+11. Go to 
+
+https://developers.google.com/calendar/api/quickstart/python
+
+and follow the given steps to create a Google Cloud Project and enable Google Calendar API. A JSON file will be downloaded. Save it as `credentials.json` and move it to the current working directory.
+
+You will be required to sign in to your account when running the program for the first time to complete authentication.
+
+12. Save the trigger words for which you want alerts during the call in `trigger_words.txt`. Each word should be typed on a separate line. You will get the alerts on telegram.
+
+13. The transcript and summary of the meeting will be mailed to you at the end of the meeting.
 
 ## Challenges 
 
@@ -52,7 +97,7 @@ Are you tired of endless meeting or classes that seem to take up most of your da
 
 - **Your voice TTS**
 
-    I tried using a module called Tortoise-TTS to generate text-to-speech for my own voice. Unfortunately, despite adding many voice samples, my voice was not replicated as this module was trained with American accents.  The audio also took a long time to generate.
+    I tried using a module called Tortoise-TTS to generate text-to-speech for my own voice. Unfortunately, despite adding many voice samples, my voice was not replicated as this module was trained with American accents.  Tortoise also takes a long time to generate audio, making it unviable for realtime answers in meetings.
 
 - **Tool for meeting summary**
 
@@ -65,6 +110,6 @@ Are you tired of endless meeting or classes that seem to take up most of your da
 
 - **Intelligent response system:** Reduce user involvement further by using AI to provide context-sensitive responses during meetings.
 
-- **Advanced Personalization:** Customizing how the bot engages in different types of meetings.
+- **Advanced Personalization:** Customizing voice to make it sound like you.
 
 - **Virtual Avatar:** Creating an personal video avatar of you that can automatically respond to simple questions in the meeting.
