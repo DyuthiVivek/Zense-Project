@@ -60,7 +60,11 @@ Are you tired of endless meeting or classes that seem to take up most of your da
 
 12. Save the trigger words for which you want alerts during the call in `trigger_words.txt`. Each word should be typed on a separate line. You will get the alerts on telegram.
 
-13. The transcript and summary of the meeting will be mailed to you at the end of the meeting.
+13. Install a ChromeDriver according to your Chrome version from https://chromedriver.chromium.org/downloads. Save it in the current working directory.
+
+14. Run `chromedriver` in a different terminal. Run `main.py` from the same terminal with the virtual environment.
+
+15. The transcript and summary of the meeting will be mailed to you at the end of the meeting.
 
 ## Challenges 
 
