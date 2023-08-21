@@ -1,13 +1,16 @@
 import requests
 import json
 import time
+from get_credentials import get_assembyai_api
 
 # given the voice recording in output.wav, generates the transcript and summary
 def get_transcript():
   base_url = "https://api.assemblyai.com/v2"
 
+  token = get_assembyai_api()
+
   headers = {
-      "authorization": "0bd8f34e52ae49039d8bb4a0f6c8d280"
+      "authorization": token
   }
 
   with open("output.wav", "rb") as f:

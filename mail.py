@@ -1,11 +1,12 @@
 from email.message import EmailMessage
 import ssl
 import smtplib
+from get_credentials import get_email, get_sender_address, get_sender_password
 
 def send_mail(body, subject):
-    email_sender = 'phoenixrises004@gmail.com'
-    email_password = 'vepagrhokkojggfy'
-    email_receiver = 'dyuthi.vivek@gmail.com'
+    email_sender = get_sender_address()
+    email_password = get_sender_password()
+    email_receiver = get_email()
     
     em = EmailMessage()
     em['From'] = email_sender

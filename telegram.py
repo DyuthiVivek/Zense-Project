@@ -1,5 +1,7 @@
 import requests
-token = '6526565187:AAFzvJUgnB-9Two9SSKyGcf7FlsDYkRmbFk'
+from get_credentials import get_telegram_token
+
+token = get_telegram_token()
 
 # send a message to telegram
 def send_a_message(msg):
