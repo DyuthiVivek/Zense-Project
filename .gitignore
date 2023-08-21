@@ -1,6 +1,0 @@
-config.encrypted
-*.json
-*.log
-*.wav
-session.session
-__pycache__/
