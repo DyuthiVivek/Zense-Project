@@ -26,7 +26,7 @@ Are you tired of endless meeting or classes that seem to take up most of your da
 10. **Smtplib** and **Email Python Library** to mail the transcript and summary
 
 
-## Installation
+## Installation and Usage
 
 1. Clone/download this repository.
 2. Ensure that python3.10 is installed.
@@ -64,7 +64,9 @@ Are you tired of endless meeting or classes that seem to take up most of your da
 
 14. Run `chromedriver` in a different terminal. Run `main.py` from the same terminal with the virtual environment.
 
-15. The transcript and summary of the meeting will be mailed to you at the end of the meeting.
+15. Send *'Chat: your message'* to your telegram bot to send the message in the meeting chat. Send *'Speak: your message'* to speak your message in the meeting.
+
+16. The transcript and summary of the meeting will be mailed to you at the end of the meeting.
 
 ## Challenges 
 
