@@ -2,7 +2,7 @@
 
 ## Overview
 
-Are you tired of endless meeting or classes that seem to take up most of your day? Wish you could be more productive while still appearing fully engaged? Look no further! Introducing AutoMeet, a Google Meet Automation tool. Seamlessly integrating with Google Calendar, it ensures timely meeting attendance. From intelligent alerts to voice response, it enables selective engagement and even records meetings and provides a transcript and summary for future reference. 
+Are you tired of endless meetings or classes that seem to take up most of your day? Wish you could be more productive while still appearing fully engaged? Look no further! Introducing AutoMeet, a Google Meet Automation tool. Seamlessly integrating with Google Calendar, it ensures timely meeting attendance. From intelligent alerts to voice response, it enables selective engagement and even records meetings and provides a transcript and summary for future reference. 
 
 ## Objectives
 
