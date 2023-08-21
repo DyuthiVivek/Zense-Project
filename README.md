@@ -50,13 +50,13 @@ Are you tired of endless meeting or classes that seem to take up most of your da
 
 9. Go to telegram and search for @BotFather. Follow the displayed steps to create a new bot. Paste the API token at `set_up_config.py`.
 
-You will be required to send a message to the bot the first time to complete authentication.
+    You will be required to send a message to the bot the first time to complete authentication.
 
 10. Run `set_up_config.py`. Now all your credentials will be saved in an encrypted config file. Paste the AES key that is printed in `get_credentials.py`. 
 
 11. Go to https://developers.google.com/calendar/api/quickstart/python and follow the given steps to create a Google Cloud Project and enable Google Calendar API. A JSON file will be downloaded. Save it as `credentials.json` and move it to the current working directory.
 
-You will be required to sign in to your account when running the program for the first time to complete authentication.
+    You will be required to sign in to your account when running the program for the first time to complete authentication.
 
 12. Save the trigger words for which you want alerts during the call in `trigger_words.txt`. Each word should be typed on a separate line. You will get the alerts on telegram.
 
