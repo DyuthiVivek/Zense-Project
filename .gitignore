@@ -1,0 +1,6 @@
+__pycache__/
+config.encrypted
+*.json
+*.log
+*.wav
+session.session
