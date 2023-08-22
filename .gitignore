@@ -5,3 +5,4 @@ config.encrypted
 *.wav
 session.session
 *.png
+chromedriver-linux64/
