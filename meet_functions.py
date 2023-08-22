@@ -230,7 +230,6 @@ def message_from_telegram(last_msg_id, driver):
         for m in messages:
             if 'voice' in m['message']:
                 driver.find_element("xpath","/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[11]/div/div/div[2]/div/div[1]/div/div[2]/span/button").click()
-                time.sleep(1)
                 telegram.get_audio(m['message']['voice']['file_id'])
                 playsound("received_audio.wav")
                 driver.find_element("xpath","/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[11]/div/div/div[2]/div/div[1]/div/div[2]/span/button").click()
