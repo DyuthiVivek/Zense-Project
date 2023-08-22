@@ -13,6 +13,8 @@ import telegram
 import tts
 from get_credentials import get_email, get_pwd
 import sys
+from playsound import playsound  
+
 
 # get list of trigger words from .txt file 
 trigger_words = []
@@ -33,7 +35,7 @@ def initialize_driver():
         "profile.default_content_setting_values.notifications": 1 
     })
 
-    driver = uc.Chrome(chrome_options = opt)
+    driver = uc.Chrome(chrome_options = opt, driver_executable_path='/home/dyuthi/Zense-Project/chromedriver-linux64/chromedriver')
     driver.implicitly_wait(20)
 
     #enable mic and camera
@@ -226,14 +228,20 @@ def message_from_telegram(last_msg_id, driver):
                 messages = messages[i + 1 : ]
                 break
         for m in messages:
+            if 'voice' in m['message']:
+                driver.find_element("xpath","/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[11]/div/div/div[2]/div/div[1]/div/div[2]/span/button").click()
+                time.sleep(1)
+                telegram.get_audio(m['message']['voice']['file_id'])
+                playsound("received_audio.wav")
+                driver.find_element("xpath","/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[11]/div/div/div[2]/div/div[1]/div/div[2]/span/button").click()
 
             # if the user wants to send this message in chat
-            if str(m['message']['text']).startswith("Chat:"):
+            elif 'text' in m['message'] and str(m['message']['text']).startswith("Chat:"):
                 m['message']['text'] = str(m['message']['text'][5:]).strip()
                 send_a_message_in_chat(m['message']['text'], driver)
 
             # if the user wants it to be spoken
-            elif str(m['message']['text']).startswith("Speak:"):
+            elif 'text' in m['message'] and str(m['message']['text']).startswith("Speak:"):
                 driver.find_element("xpath","/html/body/div[1]/c-wiz/div[1]/div/div[14]/div[3]/div[11]/div/div/div[2]/div/div[1]/div/div[2]/span/button").click()
                 msg = str(m['message']['text'][6:]).strip()
 

@@ -1,5 +1,13 @@
 import requests
 from get_credentials import get_telegram_token
+from pydub import AudioSegment
+import os
+
+
+def ogg2wav(ofn):
+    wfn = ofn.replace('.ogg','.wav')
+    x = AudioSegment.from_file(ofn)
+    x.export(wfn, format='wav') 
 
 token = get_telegram_token()
 chat_id = 5430419326
@@ -23,7 +31,7 @@ def get_all_messages():
 # get newest message sent
 def get_new_message():
     url = f'https://api.telegram.org/bot{token}/getUpdates'
-    print(requests.post(url).json()['result'][-1]['message']['text'])
+    return requests.post(url).json()['result'][-1]['message']['text']
 
 # send screenshot
 def send_photo():
@@ -31,4 +39,15 @@ def send_photo():
     files = {'photo': open('image.png', 'rb')}
     url = f'https://api.telegram.org/bot{token}/sendPhoto'
     requests.post(url, params, files=files)
-    
+
+def get_audio(file_id):
+    file_info_url = f"https://api.telegram.org/bot{token}/getFile?file_id={file_id}"
+    response = requests.get(file_info_url)
+    file_path = response.json()['result']['file_path']
+    file_url = f"https://api.telegram.org/file/bot{token}/{file_path}"
+    response = requests.get(file_url)
+    if response.status_code == 200:
+        with open("received_audio.ogg", "wb") as f:
+            f.write(response.content)
+        ogg2wav("received_audio.ogg")
+        os.remove("received_audio.ogg")

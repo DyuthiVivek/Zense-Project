@@ -60,13 +60,11 @@ Are you tired of endless meetings or classes that seem to take up most of your d
 
 12. Save the trigger words for which you want alerts during the call in `trigger_words.txt`. Each word should be typed on a separate line. You will get the alerts on telegram.
 
-13. Install a ChromeDriver according to your Chrome version from https://chromedriver.chromium.org/downloads. Save it in the current working directory.
+13. Download a ChromeDriver according to your Chrome version from https://googlechromelabs.github.io/chrome-for-testing/#stable. Extract the folder and add its path in `meet_functions.py`.
 
-14. Run `chromedriver` in a different terminal. Run `main.py` from the same terminal with the virtual environment.
+14. Run `main.py`. Send *'Chat: your message'* / Send *'Speak: your message'* to send/speak your message in the meeting. Record any audio clip in telegram to be played in the meeting.
 
-15. Send *'Chat: your message'* to your telegram bot to send the message in the meeting chat. Send *'Speak: your message'* to speak your message in the meeting.
-
-16. The transcript and summary of the meeting will be mailed to you at the end of the meeting.
+15. The transcript and summary of the meeting will be mailed to you at the end of the meeting.
 
 ## Challenges 
 
