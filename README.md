@@ -29,22 +29,17 @@ Are you tired of endless meetings or classes that seem to take up most of your d
 ## Installation and Usage
 
 1. Clone/download this repository.
-2. Ensure that python3.10 is installed.
-3. Create a virtual environment.
+3. Create a virtual environment and activate it.
 
-    > `virtualenv -p <path to python3.10> venv`
-
-4. Activate the virtual environment.
-
-    > `source venv/bin/activate`
+    > `python3 -m venv env`
+    
+    > `source env/bin/activate`
 
 5. Install requirements.
 
     > `pip install -r requirements.txt`
 
-6. Turn off Two-Factor Authentication for the account you want to join the meeting with.
-
-7. Enter your email ID and password in `set_up_config.py`.
+6. Turn off Two-Factor Authentication for the account you want to join the meeting with. Enter your email ID and password in `set_up_config.py`.
 
 8. Sign up at  https://www.assemblyai.com/dashboard/signup and get your API key. Paste it in `set_up_config.py`.
 
@@ -58,7 +53,7 @@ Are you tired of endless meetings or classes that seem to take up most of your d
 
     You will be required to sign in to your account when running the program for the first time to complete authentication.
 
-12. Save the trigger words for which you want alerts during the call in `trigger_words.txt`. Each word should be typed on a separate line. You will get the alerts on telegram.
+12. Save the trigger words for which you want alerts during the call in `trigger_words.txt`. Each word should be typed on a separate line. 
 
 13. Download a ChromeDriver according to your Chrome version from https://googlechromelabs.github.io/chrome-for-testing/#stable. Extract the folder and add its path in `meet_functions.py`.
 

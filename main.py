@@ -2,7 +2,7 @@ import time
 import sys
 from datetime import date, datetime
 from meet_functions import *
-from quickstart import next_event_details
+from google_calendar import next_event_details
 import telegram
 from subprocess import Popen
 import os
