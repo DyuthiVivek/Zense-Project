@@ -51,6 +51,6 @@ def get_audio(file_id):
         with open("received_audio.ogg", "wb") as f:
             f.write(response.content)
 
-        # convert ogg to wav file
+        # convert ogg to wav file to use playsound
         ogg2wav("received_audio.ogg")
         os.remove("received_audio.ogg")

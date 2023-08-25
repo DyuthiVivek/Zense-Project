@@ -54,7 +54,6 @@ if __name__ == "__main__":
     # print("Process ID is", processId)
 
     while True:
-        # print("Looping...")
 
         # get CC
         flag = get_cc(flag, driver)
@@ -79,7 +78,6 @@ if __name__ == "__main__":
             print('meeting exited')
             break
 
-        # print("After check_meeting...")
     
     # outside the meeting
 
@@ -91,7 +89,7 @@ if __name__ == "__main__":
     time.sleep(1)
     print("Done")
 
-    # mail the transcript and summary
+    # get the transcript and summary from AssemblyAI
     content = get_transcript()
 
     # compose body of mail
@@ -103,5 +101,7 @@ if __name__ == "__main__":
         mail_subject += event_dic['details']
         mail_subject += ' '
     mail_subject += event_dic['start_time']
+
+    # send mail
     send_mail(mail_body, mail_subject)
     sys.exit()

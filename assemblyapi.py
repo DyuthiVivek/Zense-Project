@@ -7,16 +7,18 @@ from get_credentials import get_assembyai_api
 def get_transcript():
   base_url = "https://api.assemblyai.com/v2"
 
+  # get API key from config file
   token = get_assembyai_api()
 
   headers = {
       "authorization": token
   }
 
+  # opening recorded audio file
   with open("output.wav", "rb") as f:
     response = requests.post(base_url + "/upload",
-                            headers=headers,
-                            data=f)
+                            headers = headers,
+                            data = f)
 
   upload_url = response.json()["upload_url"]
 
@@ -34,21 +36,20 @@ def get_transcript():
   polling_endpoint = f"https://api.assemblyai.com/v2/transcript/{transcript_id}"
 
   while True:
+
+    # get transcription result 
     transcription_result = requests.get(polling_endpoint, headers=headers).json()
 
     if transcription_result['status'] == 'completed':
       summary = transcription_result.get('summary', '')
       print("Transcription completed!")
 
+      # storing trancsription and summary in a dictionary and returning
       dic = {}
       dic['Transcription'] = transcription_result['text']
       dic['Summary'] = summary
 
       return dic
-      # print(f"Transcription: {transcription_result['text']}")
-      # print()
-      # print(f"Summary: {summary}")
-      # break
 
     elif transcription_result['status'] == 'error':
       print("Transcription failed")

@@ -45,7 +45,7 @@ def next_event_details():
         if not events:
             return None
         
-        # create a dictionary with details of the nect upcoming event
+        # create a dictionary with details of the next upcoming event
         next_event_details = {}
 
         event = events[0]
@@ -65,10 +65,9 @@ def next_event_details():
             print('No meeting link in upcoming event')
             sys.exit()
 
+        # return this dictionary
         return next_event_details
 
     except HttpError as error:
         print('An error occurred:', error)
-
-# reference link
-# https://developers.google.com/calendar/api/quickstart/python
+        sys.exit()

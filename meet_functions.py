@@ -1,11 +1,7 @@
-from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
-from selenium.common.exceptions import NoSuchElementException
 from bs4 import BeautifulSoup as soup
 import undetected_chromedriver as uc
 import time
@@ -35,7 +31,7 @@ def initialize_driver():
         "profile.default_content_setting_values.notifications": 1 
     })
 
-    driver = uc.Chrome(chrome_options = opt, driver_executable_path='/home/dyuthi/Zense-Project/chromedriver-linux64/chromedriver')
+    driver = uc.Chrome(chrome_options = opt, driver_executable_path = '/home/dyuthi/Zense-Project/chromedriver-linux64/chromedriver')
     driver.implicitly_wait(20)
 
     #enable mic and camera
@@ -149,7 +145,7 @@ def send_a_message_in_chat(msg, driver):
     driver.implicitly_wait(200)
     chat.send_keys(Keys.ENTER)
 
-# Scrape the Chat Box
+# Scrape the Chat Box using BeautifulSoup
 def scrape(driver, chat_dic):
     html = driver.page_source
     page_soup = soup(html, "html.parser")
@@ -284,13 +280,9 @@ def is_element_appeared(element_Xpath, driver, timeout = 2):
     try:
         wait = WebDriverWait(driver, timeout=timeout)
         driver.implicitly_wait(timeout)
-        # print("In webdriverwait...")
-        driver.find_element(By.XPATH,element_Xpath);
-        #WebDriverWait(driver, timeout).until(EC.visibility_of_element_located((By.XPATH, element_Xpath)))
+        driver.find_element(By.XPATH,element_Xpath)
         return True
     except Exception as ex:
-        # print("In webdriverwait exception", ex)
-        #raise RuntimeError("Something went wrong!!")
         return False
 
 # check if meeting has ended yet 
@@ -298,26 +290,18 @@ def check_meeting(driver):
 
     # check if return to home screen button is present
     try:
-        # print("Before is_element_appeared - 1")
         if is_element_appeared("/html/body/div[1]/c-wiz/div/div/div[1]/div[2]/div/button",driver):
-           #driver.find_element("xpath", "/html/body/div[1]/c-wiz/div/div/div[1]/div[2]/div/button")
-            # print("Found! - 1")
+            # found, so exit meeting
             return False
     except:
-        # print("exception! - 1")
         pass
     
     # check if home screen present
     try:
-        # print("Before is_element_appeared - 2")
         if is_element_appeared("/html/body/c-wiz/div/div[2]/div/div[1]/div[3]/div/div[1]/div[1]/div/button",driver):
-            #driver.find_element("xpath", "/html/body/c-wiz/div/div[2]/div/div[1]/div[3]/div/div[1]/div[1]/div/button")
-            #print("Exiting...")
-            #sys.exit()
-            # print("Found! - 2")
+            # found, so exit meeting
             return False
     except:
-        # print("exception! - 2")
         pass
 
     # the meeting has not ended 

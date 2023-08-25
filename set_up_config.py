@@ -13,7 +13,7 @@ print(aes_key)
 
 conf_file.add_section('user')
 
-# Add your email ID and password
+# Add your credentials here
 conf_file['user']['email'] = 'Your mail ID here'
 conf_file['user']['pwd'] = 'Your password here'
 conf_file['user']['assemblyAI'] = 'Your AssemblyAI API token here'
@@ -21,7 +21,7 @@ conf_file['user']['assemblyAI'] = 'Your AssemblyAI API token here'
 conf_file['user']['email_sender'] = 'ID of mail sender here'
 conf_file['user']['sender_password'] = 'Password of mail sender here'
 
-conf_file['user']['telegram'] = 'Telegram token here'
+conf_file['user']['telegram'] = 'Your telegram token here'
     
 
 # Write encrypted config file
