@@ -3,7 +3,7 @@ from get_credentials import get_telegram_token
 from pydub import AudioSegment
 import os
 
-
+# .ogg to .wav file
 def ogg2wav(ofn):
     wfn = ofn.replace('.ogg','.wav')
     x = AudioSegment.from_file(ofn)
@@ -40,6 +40,7 @@ def send_photo():
     url = f'https://api.telegram.org/bot{token}/sendPhoto'
     requests.post(url, params, files=files)
 
+# get audio sent
 def get_audio(file_id):
     file_info_url = f"https://api.telegram.org/bot{token}/getFile?file_id={file_id}"
     response = requests.get(file_info_url)
@@ -49,5 +50,7 @@ def get_audio(file_id):
     if response.status_code == 200:
         with open("received_audio.ogg", "wb") as f:
             f.write(response.content)
+
+        # convert ogg to wav file
         ogg2wav("received_audio.ogg")
         os.remove("received_audio.ogg")

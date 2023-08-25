@@ -57,7 +57,7 @@ Are you tired of endless meetings or classes that seem to take up most of your d
 
 13. Download a ChromeDriver according to your Chrome version from https://googlechromelabs.github.io/chrome-for-testing/#stable. Extract the folder and add its path in `meet_functions.py`.
 
-14. Run `main.py`. Send *'Chat: your message'* / Send *'Speak: your message'* to send/speak your message in the meeting. Record any audio clip in telegram to be played in the meeting.
+14. Run `main.py`. Send *'Chat: your message'* / Send *'Speak: your message'* to send/speak your message (using a text-to-speech generator) in the meeting. Record any audio clip in telegram to be played in the meeting.
 
 15. The transcript and summary of the meeting will be mailed to you at the end of the meeting.
 
@@ -75,9 +75,6 @@ Are you tired of endless meetings or classes that seem to take up most of your d
 
     - Turning off Two-Factor Authentication
     - Using `undetected_chromedriver`
-
-    `undetected_chromedriver` is unable to connect with ChromeDriver at times. The workaround for this is to kill any existing ChromeDriver process and wait for a few seconds. It appears to be more stable with python version 3.10.  
-
     
 - **Browser Level Notifications**
 
@@ -95,6 +92,10 @@ Are you tired of endless meetings or classes that seem to take up most of your d
     Identifying a free tool for meeting transcription and summary generation was challenging. Most of the popular ones like Tactiq and Laxis offer only limited free transcriptions. Obtaining the transcript from the live captions in Google Meet by scraping the captions periodically resulted in occasional overlapping and missed content.
 
     This problem was solved by recording the audio and using AssemblyAI to generate the transcript and summary.
+
+## Demo Video
+
+https://drive.google.com/file/d/1dRk4G_EhHbZWhdSDAoeG5VULG_hDZQrn/view?usp=sharing
 
 
 ## Future Scope

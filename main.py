@@ -91,9 +91,13 @@ if __name__ == "__main__":
     time.sleep(1)
     print("Done")
 
-    # print the transcript and summary
+    # mail the transcript and summary
     content = get_transcript()
+
+    # compose body of mail
     mail_body = "Transcription:\n" + content['Transcription'] + '\n\n' + 'Summary:\n' + content['Summary']
+
+    # compose subject
     mail_subject = 'Transcript and summary from '
     if 'details' in event_dic:
         mail_subject += event_dic['details']
@@ -101,6 +105,3 @@ if __name__ == "__main__":
     mail_subject += event_dic['start_time']
     send_mail(mail_body, mail_subject)
     sys.exit()
-
-# fix telegram
-# calendar api refresh
