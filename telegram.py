@@ -10,7 +10,7 @@ def ogg2wav(ofn):
     x.export(wfn, format='wav') 
 
 token = get_telegram_token()
-chat_id = 5430419326
+chat_id = 'Your chat ID here (as an int)'
 
 # send a message to telegram
 def send_a_message(msg):
