@@ -100,10 +100,10 @@ https://drive.google.com/file/d/1dRk4G_EhHbZWhdSDAoeG5VULG_hDZQrn/view?usp=shari
 
 ## Future Scope
 
-- **Integration with More Platforms:** Expand the bot's compatibility to include other popular video conferencing platforms like Zoom and Teams to cater to a wider audience.
+- **Integration with Other Platforms:** Expand the bot's compatibility to other popular video conferencing platforms like Zoom, Teams and other chat services like WhatsApp to cater to a wider audience.
 
 - **Intelligent response system:** Reduce user involvement further by using AI to provide context-sensitive responses during meetings.
 
 - **Advanced Personalization:** Customizing voice to make it sound like you.
 
-- **Virtual Avatar:** Creating an personal video avatar of you that can automatically respond to simple questions in the meeting.
+- **Virtual Avatar:** Creating your personal video avatar that can automatically respond to simple questions in the meeting.
